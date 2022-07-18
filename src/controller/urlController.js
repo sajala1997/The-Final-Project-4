@@ -2,11 +2,11 @@ const urlModel = require("../model/urlModel")
 const validUrl = require('valid-url')
 const shortid = require('shortid')
 
-const baseUrl = 'http:localhost:3000'
 
 const createUrl = async function (req, res) {
-
+    const baseUrl = 'localhost:3000'
     let longUrl= req.body
+    
     if (!validUrl.isUri(baseUrl)) {
         return res.status(401).json('Invalid base URL')
     }
@@ -22,8 +22,8 @@ const createUrl = async function (req, res) {
             "shortUrl": shortUrl,
             "urlCode" : urlCode
         }
-        let url = await urlModel.create(data);
-        return res.status(201).send({ status: true, msg: url })
+        let url = await urlModel.create(longUrl);
+        return res.status(201).send({ status: true, data: url })
 
     }
 }
