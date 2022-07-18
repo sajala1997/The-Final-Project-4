@@ -2,7 +2,6 @@ const urlModel = require("../model/urlModel")
 const validUrl = require('valid-url')
 const shortid = require('shortid')
 
-const baseUrl = 'http:localhost:3000'
 
 const createUrl = async function (req, res) {
 
@@ -11,7 +10,7 @@ const createUrl = async function (req, res) {
         let body = req.body;
         let { longUrl } = body;
         if (Object.keys(body) == 0) return res.status(400).send({ status: false, message: 'please enter body' })
-        if (!('longUrl' in body)) return res.status(400).send({ status: false, message: 'longUrl is reuired' })
+        //if (!('longUrl' in body)) return res.status(400).send({ status: false, message: 'longUrl is reuired' })
         if (await urlModel.findOne({ longUrl })) return res.status(400).send({ status: false, message: 'url already exists in database' })
     
     
@@ -42,7 +41,8 @@ const createUrl = async function (req, res) {
           if (!url) {
             return res.status(404).send({ status: false, message: 'No URL found' })
           }
-          return res.status(302).redirect(url.longUrl)
+          //return res.status(302).redirect(url.longUrl)
+          return res.status(302).send({message: `Found. redirected to ${url.longUrl}`})
           
         }
         catch (error) {
