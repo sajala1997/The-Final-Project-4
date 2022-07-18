@@ -33,7 +33,8 @@ const createUrl = async function (req, res) {
           const shortUrl = baseUrl + '/' + urlCode
           body.shortUrl = shortUrl
         }
-        let saveData = await urlModel.create(body)
+        let Data = await urlModel.create(body)
+        let saveData= await urlModel.findOne({longUrl:longUrl}).select({_id:0,createdAt:0,updatedAt:0,__v:0})
         return res.status(201).send({ status: true, data: saveData })
     
       } catch (error) {
