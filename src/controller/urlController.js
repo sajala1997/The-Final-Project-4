@@ -31,11 +31,11 @@ const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
 
-
+//creating short url
 const createUrl = async function (req, res) {
 
   try {
-      const baseUrl = 'http:localhost:3000'
+      const baseUrl = 'http://localhost:3000'
       let body = req.body;
       let { longUrl } = body;
 
@@ -50,6 +50,7 @@ const createUrl = async function (req, res) {
     //  if (await urlModel.findOne({ longUrl })) {
         let cachedData = await GET_ASYNC(`${longUrl}`)
         if(cachedData){
+          console.log(cachedData)
           console.log(typeof cachedData)
           check= JSON.parse(cachedData)
         return res.status(201).send({ status: true, message:"Data coming from cache", data: check })}
@@ -76,6 +77,11 @@ const createUrl = async function (req, res) {
   };
 
 
+
+
+//------------------------------------------------------
+//get data using shortUrl
+
     const getUrl = async function (req, res) {
         try {
 
@@ -90,9 +96,9 @@ const createUrl = async function (req, res) {
          else {
               let url = await urlModel.findOne({ urlCode })
              if (!url) {
-                  return res.status(404).send({ status: false, message: 'No such urlCode found' })
+                  return res.status(404).send({ status: false, message: 'No such shortUrl found' })
               }
-              await SET_ASYNC(`${urlCode}`, JSON.stringify(url))
+              //await SET_ASYNC(`${urlCode}`, JSON.stringify(url))
               return res.status(302).redirect(url.longUrl)
               }
 
